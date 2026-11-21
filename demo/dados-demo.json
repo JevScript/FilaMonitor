@@ -1,0 +1,203 @@
+{
+  "estrategiaAtiva": "FIFO_SIMPLES",
+  "totalResolvidosNaTriagem": 4,
+  "mural": {
+    "statusMonitor": "ONLINE",
+    "mensagemAviso": "Plantão ativo no Lab 03 (Bloco B) e atendimento pela fila digital. Entregas de POO até 22h têm prioridade.",
+    "reforcoRemoto": {
+      "disciplina": "Banco de Dados",
+      "dataHora": "Sabado, 10:00",
+      "topico": "Joins e Structure Query",
+      "linkSala": "https://meet.ucsal.br/reforco-poo-bes"
+    },
+    "atualizadoEm": "2026-11-20T20:41:01.577Z"
+  },
+  "chamados": [
+    {
+      "id": "ch-101",
+      "nomeAluno": "Lucas Andrade",
+      "disciplina": "POO Avançada",
+      "topico": "SOLID",
+      "urgencia": "NORMAL",
+      "descricao": "Como aplicar o princípio da inversão de dependência (DIP) entre o Service e o Repository em TypeScript?",
+      "status": "AGUARDANDO",
+      "criadoEm": "2026-11-20T18:05:00.000Z",
+      "iniciadoEm": null,
+      "resolvidoEm": null,
+      "respostaMonitor": null,
+      "publicarNoFaq": false
+    },
+    {
+      "id": "ch-102",
+      "nomeAluno": "Mariana Silva",
+      "disciplina": "Estrutura de Dados",
+      "topico": "Collections",
+      "urgencia": "NORMAL",
+      "descricao": "Minha ordenação de objetos com Array.sort está modificando o array original e causando bug na lista.",
+      "status": "AGUARDANDO",
+      "criadoEm": "2026-11-20T18:10:00.000Z",
+      "iniciadoEm": null,
+      "resolvidoEm": null,
+      "respostaMonitor": null,
+      "publicarNoFaq": false
+    },
+    {
+      "id": "ch-103",
+      "nomeAluno": "Rafael Costa",
+      "disciplina": "POO Avançada",
+      "topico": "Padrões GoF",
+      "urgencia": "BLOQUEADO_ENTREGA",
+      "descricao": "Travado na entrega do trabalho: meu Observer não está sendo notificado quando o chamado muda para RESOLVIDO.",
+      "status": "RESOLVIDO",
+      "criadoEm": "2026-11-20T18:15:00.000Z",
+      "iniciadoEm": "2026-11-20T20:41:23.571Z",
+      "resolvidoEm": "2026-11-20T20:42:05.058Z",
+      "respostaMonitor": "Para seu observer funcionar resolva primeiro o metodo anterior que define os parametros necessarios e fornecer via interface (Contrato) os dados tratados para o observer.",
+      "publicarNoFaq": true
+    },
+    {
+      "id": "ch-100",
+      "nomeAluno": "Beatriz Nunes",
+      "disciplina": "POO Avançada",
+      "topico": "Encapsulamento",
+      "urgencia": "NORMAL",
+      "descricao": "Qual a diferença prática entre deixar o atributo público e expor apenas um método de transição de estado?",
+      "status": "RESOLVIDO",
+      "criadoEm": "2026-11-20T17:20:00.000Z",
+      "iniciadoEm": "2026-11-20T17:25:00.000Z",
+      "resolvidoEm": "2026-11-20T17:38:00.000Z",
+      "respostaMonitor": "Expor apenas métodos de transição (ex.: iniciarAtendimento) impede que código externo coloque a entidade em estado inválido. A própria entidade valida as regras antes de alterar seus campos privados.",
+      "publicarNoFaq": true
+    },
+    {
+      "id": "ch-fa38d5c9",
+      "nomeAluno": "Vicente Jean",
+      "disciplina": "Banco de Dados",
+      "topico": "JOINS",
+      "urgencia": "BLOQUEADO_ENTREGA",
+      "descricao": "Estou com duvida para concater joins as minhas querys bases, atualmente esse gap esta me impedindo de adicionar complexidades maiores em meus projetos como filtros mais avancados e algorimtos mais otimizados.\n\nFora os erros de sintaxe preciso que me instrua no assunto joins.",
+      "status": "AGUARDANDO",
+      "criadoEm": "2026-11-20T20:36:44.887Z",
+      "iniciadoEm": null,
+      "resolvidoEm": null,
+      "respostaMonitor": null,
+      "publicarNoFaq": false
+    }
+  ],
+  "faq": [
+    {
+      "id": "faq-702356a4",
+      "disciplina": "POO Avançada",
+      "topico": "Padrões GoF",
+      "pergunta": "Travado na entrega do trabalho: meu Observer não está sendo notificado quando o chamado muda para RESOLVIDO.",
+      "resposta": "Para seu observer funcionar resolva primeiro o metodo anterior que define os parametros necessarios e fornecer via interface (Contrato) os dados tratados para o observer.",
+      "palavrasChave": [
+        "padroes",
+        "gof",
+        "poo",
+        "avancada",
+        "travado",
+        "entrega",
+        "trabalho",
+        "observer",
+        "sendo",
+        "notificado",
+        "chamado",
+        "muda",
+        "resolvido",
+        "funcionar",
+        "resolva",
+        "primeiro",
+        "metodo",
+        "anterior",
+        "define",
+        "parametros",
+        "necessarios",
+        "fornecer",
+        "via",
+        "interface",
+        "contrato",
+        "dados",
+        "tratados"
+      ],
+      "criadoEm": "2026-11-20T20:42:05.065Z",
+      "origemChamadoId": "ch-103"
+    },
+    {
+      "id": "faq-001",
+      "disciplina": "POO Avançada",
+      "topico": "SOLID",
+      "pergunta": "Minha classe Service está com muitos if/else para escolher o algoritmo de cálculo. Qual princípio SOLID resolve isso?",
+      "resposta": "Isso viola o Open/Closed Principle (OCP). Extraia uma interface (Padrão Strategy) para o algoritmo variável e crie uma classe concreta para cada regra, injetando a estratégia no Service.",
+      "palavrasChave": [
+        "solid",
+        "ocp",
+        "open",
+        "closed",
+        "strategy",
+        "algoritmo",
+        "service",
+        "calculo",
+        "else"
+      ],
+      "criadoEm": "2026-11-19T14:00:00.000Z",
+      "origemChamadoId": null
+    },
+    {
+      "id": "faq-002",
+      "disciplina": "POO Avançada",
+      "topico": "Padrões GoF",
+      "pergunta": "Como trocar a estratégia de ordenação em tempo de execução usando o Padrão Strategy?",
+      "resposta": "Defina uma interface comum (ex.: EstrategiaPriorizacao) com o método ordenar(). O Service guarda uma referência para a interface e expõe um método alternarEstrategia(), permitindo trocar a implementação sem alterar a lógica de ordenação.",
+      "palavrasChave": [
+        "strategy",
+        "gof",
+        "ordenacao",
+        "interface",
+        "trocar",
+        "execucao",
+        "polimorfismo",
+        "fila"
+      ],
+      "criadoEm": "2026-11-19T16:30:00.000Z",
+      "origemChamadoId": null
+    },
+    {
+      "id": "faq-003",
+      "disciplina": "Estrutura de Dados",
+      "topico": "Collections",
+      "pergunta": "Quando devo usar HashMap/Map em vez de List/Array para buscar elementos por chave?",
+      "resposta": "Use Map/HashMap quando precisar de busca rápida por identificador único (complexidade média O(1)), evitando percorrer toda a lista (O(n)) a cada consulta.",
+      "palavrasChave": [
+        "collections",
+        "hashmap",
+        "map",
+        "list",
+        "array",
+        "busca",
+        "chave",
+        "complexidade"
+      ],
+      "criadoEm": "2026-11-18T19:15:00.000Z",
+      "origemChamadoId": null
+    },
+    {
+      "id": "faq-004",
+      "disciplina": "POO Avançada",
+      "topico": "Threads",
+      "pergunta": "Por que duas threads acessando o mesmo contador geram resultado inconsistente (race condition)?",
+      "resposta": "Porque a operação de incremento não é atômica (leitura, soma e escrita acontecem em passos separados). Proteja a seção crítica com sincronização (synchronized/mutex) ou use tipos atômicos.",
+      "palavrasChave": [
+        "threads",
+        "concorrencia",
+        "race",
+        "condition",
+        "contador",
+        "sincronizacao",
+        "atomica"
+      ],
+      "criadoEm": "2026-11-18T20:00:00.000Z",
+      "origemChamadoId": null
+    }
+  ]
+}

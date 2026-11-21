@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FilaMonitor BES — Monitoria Inteligente</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-content">
+      <div class="brand">
+        <div class="brand-badge">BES</div>
+        <div>
+          <h1>FilaMonitor BES</h1>
+          <p class="subtitle">Monitoria Inteligente &bull; POO Avançada (UCSal)</p>
+        </div>
+      </div>
+
+      <div class="topbar-controls">
+        <div class="control-group" title="Demonstração em tempo real do Padrão GoF Strategy">
+          <label for="seletor-estrategia">Estratégia da Fila (Strategy)</label>
+          <select id="seletor-estrategia" aria-label="Estratégia de priorização da fila">
+            <option value="PRIORIDADE_URGENCIA">Prioridade por Urgência + Ordem</option>
+            <option value="FIFO_SIMPLES">Ordem Estrita de Chegada (FIFO)</option>
+          </select>
+        </div>
+
+        <div class="view-switcher" role="group" aria-label="Alternar visão">
+          <button type="button" id="btn-visao-aluno" class="switch-btn active">
+            Visão Aluno
+          </button>
+          <button type="button" id="btn-visao-monitor" class="switch-btn">
+            Visão Monitor
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container main-layout">
+    <!-- Toast de feedback -->
+    <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    <!-- Faixa explicativa da estratégia ativa + métricas rápidas -->
+    <section class="strategy-banner" aria-label="Resumo operacional">
+      <div class="strategy-info">
+        <span class="pill pill-strategy" id="badge-estrategia-ativa">PRIORIDADE_URGENCIA</span>
+        <span id="texto-estrategia-descricao">Carregando estratégia ativa...</span>
+      </div>
+      <div class="metrics-strip">
+        <div class="metric-chip">
+          <strong id="metrica-aguardando">0</strong>
+          <span>Na fila</span>
+        </div>
+        <div class="metric-chip">
+          <strong id="metrica-em-atendimento">0</strong>
+          <span>Em atendimento</span>
+        </div>
+        <div class="metric-chip metric-highlight">
+          <strong id="metrica-triagem">0</strong>
+          <span>Evitados (Auto-FAQ)</span>
+        </div>
+        <div class="metric-chip">
+          <strong id="metrica-faq">0</strong>
+          <span>Itens no FAQ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 1. MURAL DE DISPONIBILIDADE E REFORÇO REMOTO (TOPO DA TELA) -->
+    <section class="mural-grid" aria-label="Mural de disponibilidade e reforço remoto">
+      <article class="card mural-status-card">
+        <div class="card-header">
+          <div>
+            <span class="eyebrow">Disponibilidade do Monitor</span>
+            <h2>Mural da Monitoria</h2>
+          </div>
+          <span id="badge-status-monitor" class="status-pill status-online">ONLINE</span>
+        </div>
+        <p id="mural-mensagem-aviso" class="mural-message">
+          Carregando aviso do monitor...
+        </p>
+        <p id="mural-atualizado-em" class="muted-meta"></p>
+
+        <!-- Controles exclusivos da Visão Monitor -->
+        <form id="form-status-monitor" class="monitor-only inline-edit-form hidden">
+          <h3>Atualizar Disponibilidade</h3>
+          <div class="form-row">
+            <div class="field">
+              <label for="input-status-monitor">Status</label>
+              <select id="input-status-monitor" required>
+                <option value="ONLINE">ONLINE (Presencial / Lab)</option>
+                <option value="PLANTAO_REMOTO">PLANTAO_REMOTO</option>
+                <option value="AUSENTE">AUSENTE</option>
+              </select>
+            </div>
+            <div class="field field-grow">
+              <label for="input-mensagem-aviso">Mensagem rápida de aviso</label>
+              <input type="text" id="input-mensagem-aviso" placeholder="Ex.: No Lab 03 até 21h" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Salvar Status</button>
+        </form>
+      </article>
+
+      <article class="card mural-reforco-card">
+        <div class="card-header">
+          <div>
+            <span class="eyebrow">Próxima Aula Coletiva</span>
+            <h2>Reforço Remoto</h2>
+          </div>
+          <span class="pill pill-info" id="reforco-datahora">--</span>
+        </div>
+        <div class="reforco-details">
+          <p><strong>Disciplina:</strong> <span id="reforco-disciplina">--</span></p>
+          <p><strong>Tópico:</strong> <span id="reforco-topico">--</span></p>
+          <p>
+            <strong>Sala simulada:</strong>
+            <a id="reforco-link" href="#" target="_blank" rel="noopener noreferrer">--</a>
+          </p>
+        </div>
+
+        <!-- Controles exclusivos da Visão Monitor -->
+        <form id="form-reforco-remoto" class="monitor-only inline-edit-form hidden">
+          <h3>Atualizar Reforço Remoto</h3>
+          <div class="form-row">
+            <div class="field">
+              <label for="input-reforco-disciplina">Disciplina</label>
+              <input type="text" id="input-reforco-disciplina" required />
+            </div>
+            <div class="field">
+              <label for="input-reforco-datahora">Data / Hora</label>
+              <input type="text" id="input-reforco-datahora" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="input-reforco-topico">Tópico</label>
+              <input type="text" id="input-reforco-topico" required />
+            </div>
+            <div class="field">
+              <label for="input-reforco-link">Link da Sala</label>
+              <input type="url" id="input-reforco-link" required />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-secondary">Atualizar Reforço</button>
+        </form>
+      </article>
+    </section>
+
+    <!-- ÁREA PRINCIPAL: VISÃO ALUNO -->
+    <section id="secao-aluno" class="workspace-grid">
+      <!-- Formulário + Triagem Preventiva Auto-FAQ -->
+      <div class="column-primary">
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Triagem Preventiva (Auto-FAQ)</span>
+              <h2>Enviar Dúvida para a Monitoria</h2>
+            </div>
+          </div>
+
+          <form id="form-duvida" class="stack-form">
+            <div class="form-row">
+              <div class="field">
+                <label for="input-nome-aluno">Seu nome (fictício)</label>
+                <input
+                  type="text"
+                  id="input-nome-aluno"
+                  placeholder="Ex.: Ana Paula"
+                  required
+                />
+              </div>
+              <div class="field">
+                <label for="input-disciplina">Disciplina</label>
+                <input
+                  type="text"
+                  id="input-disciplina"
+                  list="lista-disciplinas"
+                  placeholder="Ex.: POO Avançada"
+                  required
+                />
+                <datalist id="lista-disciplinas">
+                  <option value="POO Avançada"></option>
+                  <option value="Estrutura de Dados"></option>
+                  <option value="Engenharia de Software"></option>
+                  <option value="Banco de Dados"></option>
+                </datalist>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="input-topico">Tópico</label>
+                <input
+                  type="text"
+                  id="input-topico"
+                  list="lista-topicos"
+                  placeholder="Ex.: SOLID, Padrões GoF, Collections"
+                  required
+                />
+                <datalist id="lista-topicos">
+                  <option value="SOLID"></option>
+                  <option value="Padrões GoF"></option>
+                  <option value="Collections"></option>
+                  <option value="Threads"></option>
+                  <option value="Encapsulamento"></option>
+                </datalist>
+              </div>
+              <div class="field">
+                <label for="input-urgencia">Nível de urgência</label>
+                <select id="input-urgencia" required>
+                  <option value="NORMAL">NORMAL — Dúvida regular de estudo</option>
+                  <option value="BLOQUEADO_ENTREGA">BLOQUEADO_ENTREGA — Travado em entrega</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label for="input-descricao">Descreva sua dúvida</label>
+              <textarea
+                id="input-descricao"
+                rows="3"
+                placeholder="Ex.: Estou com vários if/else no Service para trocar o algoritmo de ordenação. Qual princípio SOLID resolve?"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary" id="btn-verificar-enviar">
+                Verificar e Enviar Dúvida
+              </button>
+            </div>
+          </form>
+
+          <!-- Card de Triagem Auto-FAQ (exibido dinamicamente quando encontra match) -->
+          <div id="card-triagem-faq" class="triage-card hidden" role="region" aria-label="Sugestão Auto-FAQ">
+            <div class="triage-header">
+              <span class="pill pill-warning">Triagem Auto-FAQ</span>
+              <h3>Encontramos uma dúvida já respondida sobre esse tópico. Isso resolve seu problema?</h3>
+            </div>
+            <div id="lista-sugestoes-faq" class="triage-suggestions"></div>
+            <div class="triage-actions">
+              <button type="button" id="btn-triagem-resolveu" class="btn btn-success">
+                Sim, resolveu (não abrir chamado)
+              </button>
+              <button type="button" id="btn-triagem-entrar-fila" class="btn btn-outline-danger">
+                Não, ainda preciso do monitor (entrar na fila)
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Base de Conhecimento Pesquisável (FAQ) -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Base de Conhecimento</span>
+              <h2>Dúvidas Frequentes (Auto-FAQ)</h2>
+            </div>
+            <input
+              type="search"
+              id="input-busca-faq"
+              class="search-input"
+              placeholder="Filtrar FAQ por palavra-chave ou tópico..."
+              aria-label="Filtrar base de FAQ"
+            />
+          </div>
+          <div id="lista-faq-aluno" class="faq-list"></div>
+        </article>
+      </div>
+
+      <!-- Fila visível para o aluno -->
+      <aside class="column-secondary">
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Acompanhamento em Tempo Real</span>
+              <h2>Fila de Atendimento</h2>
+            </div>
+          </div>
+
+          <div id="bloco-em-atendimento-aluno" class="sub-block"></div>
+          <div id="lista-fila-aluno" class="queue-list"></div>
+        </article>
+      </aside>
+    </section>
+
+    <!-- ÁREA PRINCIPAL: VISÃO MONITOR -->
+    <section id="secao-monitor" class="workspace-grid hidden">
+      <div class="column-primary">
+        <!-- Chamados Em Atendimento -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Atendimento Ativo</span>
+              <h2>Em Atendimento Agora</h2>
+            </div>
+          </div>
+          <div id="lista-em-atendimento-monitor" class="queue-list"></div>
+        </article>
+
+        <!-- Fila Aguardando Ordenada pela Strategy -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Fila Priorizada</span>
+              <h2>Chamados Aguardando</h2>
+            </div>
+          </div>
+          <div id="lista-fila-monitor" class="queue-list"></div>
+        </article>
+      </div>
+
+      <aside class="column-secondary">
+        <!-- Histórico Recente + Conferência de Observer -->
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Retroalimentação (Observer)</span>
+              <h2>Resolvidos Recentemente</h2>
+            </div>
+          </div>
+          <div id="lista-resolvidos-monitor" class="resolved-list"></div>
+        </article>
+
+        <article class="card">
+          <div class="card-header">
+            <div>
+              <span class="eyebrow">Base Atualizada Automaticamente</span>
+              <h2>Itens na Base de FAQ</h2>
+            </div>
+          </div>
+          <div id="lista-faq-monitor" class="faq-list"></div>
+        </article>
+      </aside>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

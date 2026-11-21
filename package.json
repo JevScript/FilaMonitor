@@ -1,0 +1,29 @@
+{
+  "name": "filamonitor-bes",
+  "version": "1.0.0",
+  "description": "MVP FilaMonitor BES - Sistema de monitoria inteligente com triagem Auto-FAQ, fila priorizada (Strategy) e retroalimentação (Observer).",
+  "main": "dist/src/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "tsc && node dist/src/server.js",
+    "test": "tsc && node --test dist/tests/monitoria.test.js"
+  },
+  "keywords": [
+    "poo",
+    "solid",
+    "strategy",
+    "observer",
+    "express",
+    "typescript",
+    "ucsal"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.2"
+  }
+}
